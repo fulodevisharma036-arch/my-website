@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome </title>
+    <style>
+        /* UNIQUE BACKGROUND & THEME */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f0c29; /* Dark Space Theme */
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* SCREEN 1: LOGIN */
+        #login-screen {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .input-box {
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            width: 250px;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            background: #ff9933;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover { transform: scale(1.1); background: #ffcc00; }
+
+        /* SCREEN 2: MAIN CONTENT */
+        #main-content {
+            display: none; /* Hidden until name is entered */
+        }
+
+        .welcome-section {
+            height: 20vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 3D PHOTO POP EFFECT */
+        .photo-container {
+            margin: 100px 0;
+            perspective: 1000px;
+            text-align: center;
+        }
+
+        .photo-card {
+            width: 300px;
+            height: 400px;
+            background: url('https://via.placeholder.com/300x400/ff9933/ffffff?text=Arjun+3D+Photo') center/cover;
+            border-radius: 20px;
+            transform: rotateY(20deg) rotateX(10deg);
+            transition: transform 0.5s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+
+        /* Animation when scrolled into view */
+        .photo-card.reveal {
+            transform: rotateY(0deg) rotateX(0deg) scale(1.1);
+        }
+
+        .scroll-text {
+            font-size: 1.5rem;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        footer {
+            padding: 40px;
+            background: rgba(0,0,0,0.3);
+            font-weight: bold;
+            color: #ff9933;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h1>🌺 Welcome 🌺</h1>
+        <p>Enter your name to enter the temple of code</p>
+        <input type="text" id="userName" class="input-box" placeholder="Your Name...">
+        <button class="btn" onclick="startApp()">Submit</button>
+    </div>
+
+    <div id="main-content">
+        <section class="welcome-section">
+            <h1 id="welcome-msg"></h1>
+            <p>Scroll down to see the creation...</p>
+        </section>
+
+        <section class="photo-container">
+            <p class="scroll-text">
+                "Hello i am Arjun sharma presenting u a my third try first and second try were not nice. 
+                I will try to improve in the future. Kings are born with failure"
+            </p>
+            <img src="myPhoto.jpg" class="photo-card" id="myPhoto">
+        </section>
+
+        <footer>
+            Made by Arjun sharma | © 2024 All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        function startApp() {
+            const name = document.getElementById('userName').value;
+            if (name.trim() === "") {
+                alert("Please enter a name!");
+                return;
+            }
+
+            // Transition screens
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            
+            // Set welcome message
+            document.getElementById('welcome-msg').innerText = "Welcome, " + name + "!";
+        }
+
+        // SCROLL EFFECT FOR 3D PHOTO
+        window.addEventListener('scroll', () => {
+            const photo = document.getElementById('myPhoto');
+            const position = photo.getBoundingClientRect().top;
+            const screenHeight = window.innerHeight;
+
+            if (position < screenHeight - 100) {
+                photo.classList.add('reveal');
+            }
+        });
+    </script>
+
+</body>
+</html>

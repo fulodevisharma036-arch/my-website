@@ -3,161 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome </title>
+    <title>Welcome</title>
     <style>
-        /* UNIQUE BACKGROUND & THEME */
-        body, html {
+        :root {
+            --primary-orange: #ff9933;
+            --accent-glow: #ffcc00;
+            --bg-dark: #0f0c29;
+        }
+
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f0c29; /* Dark Space Theme */
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f0c29; 
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background-attachment: fixed;
             color: white;
             overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        /* SCREEN 1: LOGIN */
-        #login-screen {
-            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            /* Prevents blue highlight box on mobile tap */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .input-box {
-            padding: 15px;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            width: 250px;
+        /* FLOATING BACKGROUND STARS */
+        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .star { 
+            position: absolute; 
+            background: white; 
+            border-radius: 50%; 
+            animation: twinkle 3s infinite ease-in-out, moveStars 20s linear infinite; 
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.4); } }
+        @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-100px); } }
+
+        /* PULSING GLOW TEXT */
+        .glow-text {
+            color: var(--primary-orange);
+            text-shadow: 0 0 15px rgba(255, 153, 51, 0.6);
+            animation: pulse-glow 2s infinite alternate;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0;
+            transition: 0.5s;
+        }
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 10px var(--primary-orange), 0 0 20px #ff4400; }
+            to { text-shadow: 0 0 25px var(--accent-glow), 0 0 50px var(--primary-orange); transform: scale(1.05); }
         }
 
-        .btn {
-            margin-top: 20px;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            background: #ff9933;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover { transform: scale(1.1); background: #ffcc00; }
-
-        /* SCREEN 2: MAIN CONTENT */
-        #main-content {
-            display: none; /* Hidden until name is entered */
-        }
-
-        .welcome-section {
-            height: 20vh;
+        /* PREMIUM GLASS CARD */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            animation: slideIn 1s ease-out;
         }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 3D PHOTO POP EFFECT */
-        .photo-container {
-            margin: 100px 0;
-            perspective: 1000px;
-            text-align: center;
-        }
-
-        .photo-card {
-            width: 300px;
-            height: 400px;
-            background: url('https://via.placeholder.com/300x400/ff9933/ffffff?text=Arjun+3D+Photo') center/cover;
-            border-radius: 20px;
-            transform: rotateY(20deg) rotateX(10deg);
-            transition: transform 0.5s;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            display: inline-block;
-        }
-
-        /* Animation when scrolled into view */
-        .photo-card.reveal {
-            transform: rotateY(0deg) rotateX(0deg) scale(1.1);
-        }
-
-        .scroll-text {
-            font-size: 1.5rem;
-            max-width: 600px;
-            margin: 20px auto;
+        .input-box { 
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             padding: 20px;
-            line-height: 1.6;
-            font-style: italic;
+            border-radius: 15px;
+            width: 320px;
+            max-width: 80vw;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            transition: 0.4s;
+            margin-bottom: 35px;
+        }
+        .input-box:focus { border-color: var(--primary-orange); background: rgba(255,255,255,0.2); transform: scale(1.05); }
+
+        .btn { 
+            padding: 18px 60px; 
+            background: var(--primary-orange); 
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 1.4rem; 
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 153, 51, 0.3); 
+            transition: 0.4s;
+        }
+        .btn:hover { background: #ffaa44; transform: scale(1.1); box-shadow: 0 15px 40px rgba(255, 153, 51, 0.5); }
+
+        #login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; z-index: 10; }
+
+        #main-content { display: none; flex-direction: column; align-items: center; padding: 80px 20px; text-align: center; flex: 1 0 auto; }
+
+        /* 3D PHOTO CARD SYSTEM */
+        .photo-container { perspective: 1000px; margin-top: 40px; margin-bottom: 60px; }
+        
+        .photo-card {
+            width: 360px; 
+            max-width: 85vw; /* Responsive for mobile */
+            border-radius: 30px; 
+            border: 6px solid var(--primary-orange);
+            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), opacity 1.5s, border-color 0.4s;
+            opacity: 0;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+            cursor: pointer;
         }
 
-        footer {
-            padding: 40px;
-            background: rgba(0,0,0,0.3);
-            font-weight: bold;
-            color: #ff9933;
+        /* PC Hover Effect */
+        @media (hover: hover) {
+            .photo-card:hover { 
+                transform: rotateX(8deg) rotateY(12deg) scale(1.05); 
+                border-color: var(--accent-glow);
+                box-shadow: -20px 30px 60px rgba(255, 153, 51, 0.3);
+            }
         }
+
+        /* Mobile/Tablet Tilted Effect (triggered via JavaScript tap) */
+        .photo-card.tilted {
+            transform: rotateX(8deg) rotateY(-12deg) scale(1.05);
+            border-color: var(--accent-glow);
+            box-shadow: 20px 30px 60px rgba(255, 153, 51, 0.3);
+        }
+
+        .reveal { opacity: 1; }
+
+        .scroll-text { font-size: 1.6rem; margin: 40px 0; max-width: 800px; line-height: 2; font-style: italic; color: #ddd; }
+
+        footer { 
+            display: none;
+            background: rgba(10, 10, 26, 0.98); 
+            padding: 30px; 
+            border-top: 4px solid var(--primary-orange); 
+            width: 100%; 
+            color: var(--primary-orange); 
+            text-align: center;
+            box-sizing: border-box;
+            font-weight: bold;
+            z-index: 20;
+        }
+
+        #warning-toast {
+            visibility: hidden; min-width: 300px; background-color: #ff4444; color: #fff;
+            text-align: center; border-radius: 15px; padding: 20px; position: fixed;
+            z-index: 1000; left: 50%; top: 30px; transform: translateX(-50%);
+        }
+        #warning-toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {top: 0; opacity: 0;} to {top: 30px; opacity: 1;} }
+        @keyframes fadeout { from {top: 30px; opacity: 1;} to {top: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
+    <div id="stars"></div>
+    <div id="warning-toast">⚠️ Please enter your name! ⚠️</div>
+
     <div id="login-screen">
-        <h1>🌺 Welcome 🌺</h1>
-        <p>Enter your name to enter the temple of code</p>
-        <input type="text" id="userName" class="input-box" placeholder="Your Name...">
-        <button class="btn" onclick="startApp()">Submit</button>
+        <div class="glass-card">
+            <h1 class="glow-text">🌺 WELCOME 🌺</h1>
+            <p style="margin-bottom: 35px; font-size: 1.2rem; opacity: 0.8;">Step into the Temple of Code</p>
+            <input type="text" id="userName" class="input-box" placeholder="Your Name..." onkeypress="handleKeyPress(event)">
+            <button class="btn" onclick="startApp()">Enter Website</button>
+        </div>
     </div>
 
     <div id="main-content">
-        <section class="welcome-section">
-            <h1 id="welcome-msg"></h1>
-            <p>Scroll down to see the creation...</p>
-        </section>
-
-        <section class="photo-container">
-            <p class="scroll-text">
-                "Hello i am Arjun sharma presenting u my website(First try). 
-                I will try to improve in the future. Kings are born with failure"
-            </p>
-            <img src="myPhoto.jpg" class="photo-card" id="myPhoto">
-        </section>
-
-        <footer>
-            Made by Arjun sharma | © 2024 All rights reserved.
-        </footer>
+        <h1 id="welcome-msg" class="glow-text"></h1>
+        <div class="scroll-text" id="typewriter-text"></div>
+        <div class="photo-container">
+            <img src="myPhoto.jpg" class="photo-card" id="myPhoto" alt="Arjun Sharma Photo" onclick="toggleTilt()">
+        </div>
     </div>
 
-    <script>
-        function startApp() {
-            const name = document.getElementById('userName').value;
-            if (name.trim() === "") {
-                alert("Please enter a name!");
-                return;
-            }
+    <footer id="main-footer">
+        DESIGNED BY ARJUN SHARMA | © 2024 ALL RIGHTS RESERVED
+    </footer>
 
-            // Transition screens
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            
-            // Set welcome message
-            document.getElementById('welcome-msg').innerText = "Welcome, " + name + "!";
+    <script>
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 'px';
+                star.style.width = size; star.style.height = size;
+                star.style.top = Math.random() * 100 + '%';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        }
+        window.onload = createStars;
+
+        // Toggles the 3D tilt when tapped on mobile
+        function toggleTilt() {
+            const photo = document.getElementById('myPhoto');
+            photo.classList.toggle('tilted');
         }
 
-        // SCROLL EFFECT FOR 3D PHOTO
-        window.addEventListener('scroll', () => {
-            const photo = document.getElementById('myPhoto');
-            const position = photo.getBoundingClientRect().top;
-            const screenHeight = window.innerHeight;
+        let charIndex = 0;
+        const message = "Hello, I am Arjun Sharma. Welcome to my digital space. This is my first step in a long journey of creation. I believe that Kings are forged through failure and persistence.";
 
-            if (position < screenHeight - 100) {
-                photo.classList.add('reveal');
+        function handleKeyPress(event) { if (event.key === "Enter") startApp(); }
+
+        function typeWriter() {
+            if (charIndex < message.length) {
+                document.getElementById("typewriter-text").innerHTML += message.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 35);
             }
-        });
-    </script>
+        }
 
+        function startApp() {
+            const nameInput = document.getElementById('userName').value.trim();
+            if (nameInput === "") {
+                const toast = document.getElementById("warning-toast");
+                toast.className = "show";
+                setTimeout(() => { toast.className = ""; }, 3000);
+                return;
+            }
+            const nameToDisplay = nameInput.toLowerCase().includes("king") ? nameInput : "King " + nameInput;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            document.getElementById('main-footer').style.display = 'block';
+            document.getElementById('welcome-msg').innerText = "Welcome, " + nameToDisplay + "!";
+            setTimeout(() => { document.getElementById('myPhoto').classList.add('reveal'); }, 200);
+            setTimeout(() => { typeWriter(); }, 1000);
+        }
+    </script>
 </body>
 </html>
